@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>House Expense Tracker</h1>
+
+    <!-- Pie Chart Section -->
+    <div class="chart-container">
+      <canvas id="budgetChart"></canvas>
+    </div>
+
+    <!-- Expense Entry Form -->
+    <div class="form-container">
+      <h2>Add Expense</h2>
+      <form id="expenseForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter name" required>
+
+        <label for="category">Category:</label>
+        <select id="category" required>
+          <option value="Material">Material</option>
+          <option value="Mason/Labor">Mason/Labor</option>
+        </select>
+
+        <label for="expense">Expense:</label>
+        <input type="number" id="expense" placeholder="Enter amount" required>
+
+        <button type="submit">Add Expense</button>
+      </form>
+    </div>
+
+    <!-- Expense Table -->
+    <div class="table-container">
+      <h2>Expense Records</h2>
+      <table id="expenseTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Expense</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be added dynamically -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Total Spent:</td>
+            <td id="totalSpent">0</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Category Summary -->
+    <div class="summary-container">
+      <h2>Category Wise Summary</h2>
+      <table id="categorySummary">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Total Expense</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be added dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js"></script>
+
+  <script src="script.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCdThUJfzV5LcmQ9jsojAmL-iBzjmbh0GI",
+      authDomain: "house-expense-tracker-61661.firebaseapp.com",
+      projectId: "house-expense-tracker-61661",
+      storageBucket: "house-expense-tracker-61661.firebasestorage.app",
+      messagingSenderId: "369950928899",
+      appId: "1:369950928899:web:b7fcaef494570e94f75e36"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+  </script>
+</body>
+</html>
