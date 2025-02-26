@@ -125,24 +125,15 @@ async function saveExpense(date, name, category, expense) {
 }
 
   
-  // Modify the form submission to save data
-  document.getElementById('expenseForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-  
-    const date = document.getElementById('date').value;
-    const name = document.getElementById('name').value;
-    const category = document.getElementById('category').value;
-    const expense = parseFloat(document.getElementById('expense').value);
-  
-    saveExpenseToGoogleSheets(date, name, category, expense);
-  
-    // Update UI
-    expenses.push({ date, name, category, expense });
-    totalSpent += expense;
-    budgetChart.data.datasets[0].data = [totalBudget - totalSpent, totalSpent];
-    budgetChart.update();
-    updateExpenseTable();
-    updateCategorySummary();
-    document.getElementById('expenseForm').reset();
-  });
-  
+document.getElementById('expenseForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const date = document.getElementById('date').value;
+  const name = document.getElementById('name').value;
+  const category = document.getElementById('category').value;
+  const expense = parseFloat(document.getElementById('expense').value);
+
+  saveExpense(date, name, category, expense);  // ✅ Call the Firebase function instead
+
+  document.getElementById('expenseForm').reset();
+});
