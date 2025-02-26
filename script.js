@@ -3,6 +3,27 @@ const totalBudget = 693000;
 let totalSpent = 0;
 let expenses = [];
 
+ // Import the functions you need from the SDKs you need
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+ // TODO: Add SDKs for Firebase products that you want to use
+ // https://firebase.google.com/docs/web/setup#available-libraries
+
+ // Your web app's Firebase configuration
+ const firebaseConfig = {
+     apiKey: "AIzaSyCdThUJfzV5LcmQ9jsojAmL-iBzjmbh0GI",
+   authDomain: "house-expense-tracker-61661.firebaseapp.com",
+   projectId: "house-expense-tracker-61661",
+   storageBucket: "house-expense-tracker-61661.firebasestorage.app",
+   messagingSenderId: "369950928899",
+   appId: "1:369950928899:web:b7fcaef494570e94f75e36"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+
+
 async function loadExpenses() {
     const expensesSnapshot = await db.collection("expenses").orderBy("timestamp", "desc").get();
     expenses = expensesSnapshot.docs.map(doc => doc.data());
