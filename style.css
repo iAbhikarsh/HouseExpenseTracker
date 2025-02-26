@@ -1,66 +1,126 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 100%;
+  width: 90%;
+  margin: 0 auto;
+  background: #fff;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}
+
+.form-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  padding: 14px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+/* Make tables fit within screen */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
   .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 95%;
+      padding: 10px;
   }
-  
+
   h1, h2 {
-    text-align: center;
+      font-size: 20px;
   }
-  
-  .chart-container {
-    margin: 20px 0;
-  }
-  
-  .form-container {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin: 10px 0 5px;
-  }
-  
+
   input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+      font-size: 14px;
+      padding: 10px;
   }
-  
-  button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  
+
   table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+      width: 100%;
+      font-size: 12px;
   }
-  
+
   th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+      padding: 6px;
+      font-size: 12px;
   }
-  
-  tfoot td {
-    font-weight: bold;
-  }
+}
+
+/* Floating Action Button (FAB) */
+.fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 30px;
+  line-height: 60px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.fab:hover {
+  background-color: #218838;
+}

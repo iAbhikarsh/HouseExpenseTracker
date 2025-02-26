@@ -26,7 +26,16 @@ const db = firebase.firestore();
 
 async function loadExpenses() {
     const expensesSnapshot = await db.collection("expenses").orderBy("timestamp", "desc").get();
-    expenses = expensesSnapshot.docs.map(doc => doc.data());
+    expenses = expensesSnapshot.docs.map(doc => {
+      const data = doc.data();
+            return {
+                date: data.date,
+                name: data.name,
+                category: data.category,
+                expense: parseFloat(data.expense) || 0  // Convert expense to number
+            };
+    }
+  );
 
     totalSpent = expenses.reduce((sum, item) => sum + item.expense, 0);
     updateExpenseTable();
