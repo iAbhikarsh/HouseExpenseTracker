@@ -129,7 +129,7 @@ function updateExpenseTable() {
         console.log(index);
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${index}</td>
+            <td>${index+1}</td>
             <td>${expense.date}</td>
             <td>${expense.name}</td>
             <td>${expense.category}</td>
