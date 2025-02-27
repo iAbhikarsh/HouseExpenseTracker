@@ -125,9 +125,10 @@ function updateExpenseTable() {
     const tbody = document.querySelector('#expenseTable tbody');
     tbody.innerHTML = '';
 
-    expenses.forEach(expense => {
+    expenses.forEach((expense,index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
+            <td>${index}</td>
             <td>${expense.date}</td>
             <td>${expense.name}</td>
             <td>${expense.category}</td>
