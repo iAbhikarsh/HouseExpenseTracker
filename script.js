@@ -126,6 +126,7 @@ function updateExpenseTable() {
     tbody.innerHTML = '';
 
     expenses.forEach((expense,index) => {
+        console.log(index);
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index}</td>
