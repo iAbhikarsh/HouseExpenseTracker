@@ -124,9 +124,8 @@ async function saveExpense(date, name, category, expense) {
 function updateExpenseTable() {
     const tbody = document.querySelector('#expenseTable tbody');
     tbody.innerHTML = '';
-
+    expenses.reverse();
     expenses.forEach((expense,index) => {
-        console.log(index);
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index+1}</td>
