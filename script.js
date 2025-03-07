@@ -23,8 +23,9 @@ async function loadExpenses() {
         const expensesSnapshot = await db.collection("expenses").orderBy("timestamp", "desc").get();
         expenses = expensesSnapshot.docs.map(doc => {
             const data = doc.data();
+            data.date=new Date(data.date);
             return {
-                date: data.date,
+                date: data.date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" }),
                 name: data.name,
                 category: data.category,
                 expense: parseFloat(data.expense) || 0  // Convert to number
@@ -113,12 +114,27 @@ async function saveExpense(date, name, category, expense) {
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        console.log("Expense added!");
+        console.log("Expense added successfully!");
         loadExpenses(); // Refresh data after adding
+
+        // Show toaster notification
+        showToaster("Expense added successfully!");
     } catch (error) {
         console.error("Error adding expense:", error);
     }
 }
+
+// Function to Show Toaster Notification
+function showToaster(message) {
+    const toaster = document.getElementById("toaster");
+    toaster.textContent = message;
+    toaster.classList.add("show");
+
+    setTimeout(() => {
+        toaster.classList.remove("show");
+    }, 3000); // Hide toaster after 3 seconds
+}
+
 
 // Function to Update Expense Table
 function updateExpenseTable() {
@@ -161,3 +177,69 @@ function updateCategorySummary() {
         tbody.appendChild(row);
     }
 }
+
+function filterExpenses() {
+    const selectedCategory = document.getElementById("expenseFilter").value;
+    const selectedDate = document.getElementById("dateFilter").value;
+    const tbody = document.querySelector("#expenseTable tbody");
+    tbody.innerHTML = "";
+
+    let filteredExpenses = expenses;
+
+    // Filter by Category
+    if (selectedCategory !== "All") {
+        filteredExpenses = filteredExpenses.filter(expense => expense.category === selectedCategory);
+    }
+
+    // Filter by Date (Only if a date is selected)
+    if (selectedDate) {
+        const formattedSelectedDate = formatDate(selectedDate);
+        filteredExpenses = filteredExpenses.filter(expense => formatDate(expense.date) === formattedSelectedDate);
+    }
+
+    // Populate table with filtered data
+    filteredExpenses.forEach((expense, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td class="small-col">${index + 1}</td>
+            <td>${formatDate(expense.date)}</td>
+            <td>${expense.name}</td>
+            <td>${expense.category}</td>
+            <td>${expense.expense.toFixed(2)}</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Update total spent after filtering
+    const totalFilteredSpent = filteredExpenses.reduce((sum, item) => sum + item.expense, 0);
+    document.getElementById("totalSpent").textContent = totalFilteredSpent.toFixed(2);
+}
+
+// Function to format date as "17 Feb"
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date)) return dateString; // If the date is invalid, return as is
+    return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+}
+
+
+
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+        page.style.display = 'none';
+    });
+    document.getElementById(pageId).style.display = 'block';
+
+    // Collapse menu on mobile when a menu item is clicked
+    document.getElementById("menu").classList.remove("active");
+}
+
+function toggleMenu() {
+    const menu = document.getElementById("menu");
+    menu.classList.toggle("active");
+}
+
+// Show Dashboard on Page Load
+document.addEventListener("DOMContentLoaded", function () {
+    showPage('dashboard');
+});

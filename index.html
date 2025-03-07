@@ -1,100 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>House Expense Tracker</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="data:,">
 </head>
 <body>
-  <div class="container">
-    <h1>House Expense Tracker</h1>
 
-    <!-- Pie Chart Section -->
-    <div class="chart-container">
-      <canvas id="budgetChart"></canvas>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <ul id="menu">
+            <li><a href="#" onclick="showPage('dashboard')">Dashboard</a></li>
+            <li><a href="#" onclick="showPage('addExpense')">Add Expense</a></li>
+            <li><a href="#" onclick="showPage('expenseRecords')">Expense Records</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page">
+            <h1>House Expense Tracker</h1>
+
+            <!-- Pie Chart Section -->
+            <div class="chart-container">
+                <canvas id="budgetChart"></canvas>
+            </div>
+
+            <!-- Category Wise Expenses Table -->
+            <div class="summary-container">
+                <h2>Category Wise Summary</h2>
+                <table id="categorySummary">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Total Expense</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be added dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Expense Page -->
+        <div id="addExpense" class="page" style="display: none;">
+            <h2>Add Expense</h2>
+            <form id="expenseForm">
+                <label for="date">Date:</label>
+                <input type="date" id="date" required>
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter name" required>
+
+                <label for="category">Category:</label>
+                <select id="category" required>
+                    <option value="Material">Material</option>
+                    <option value="Mason/Labor">Mason/Labor</option>
+                </select>
+
+                <label for="expense">Expense:</label>
+                <input type="number" id="expense" placeholder="Enter amount" required>
+
+                <button type="submit">Add Expense</button>
+            </form>
+        </div>
+
+        <!-- Expense Records Page -->
+        <div id="expenseRecords" class="page" style="display: none;">
+            <h2>Expense Records</h2>
+
+            <!-- Filters: Category & Date -->
+            <div class="filter-container">
+                <label for="expenseFilter">Filter by Category:</label>
+                <select id="expenseFilter" onchange="filterExpenses()">
+                    <option value="All">All Categories</option>
+                    <option value="Material">Material</option>
+                    <option value="Mason/Labor">Mason/Labor</option>
+                </select>
+
+                <label for="dateFilter">Filter by Date:</label>
+                <input type="date" id="dateFilter" onchange="filterExpenses()">
+            </div>
+
+            <div class="table-container">
+                <table id="expenseTable">
+                    <thead>
+                        <tr>
+                            <th class="small-col">No.</th>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Expense</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be added dynamically -->
+                    </tbody>
+                    <tfoot style="background-color:#4CAF50;">
+                      <tr>
+                          <td colspan="3"></td> <!-- Empty columns to align "Total Spent" under Category -->
+                          <td style="font-weight: bold; text-align: left; color: white;">Total Spent:</td> 
+                          <td id="totalSpent" style="font-weight: bold;color: white;">0</td>
+                      </tr>
+                  </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <!-- Expense Entry Form -->
-    <div class="form-container" id="expenseFormContainer">
-      <h2>Add Expense</h2>
-      <form id="expenseForm">
-        <label for="date">Date:</label>
-        <input type="date" id="date" required>
+    <!-- Floating Button for Quick Add Expense -->
+    <div class="fab" onclick="showPage('addExpense')">+</div>
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" placeholder="Enter name" required>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore-compat.js"></script>
+    
+    <script src="script.js"></script>
+    
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'block';
+            document.getElementById("menu").classList.remove("active");
+        }
 
-        <label for="category">Category:</label>
-        <select id="category" required>
-          <option value="Material">Material</option>
-          <option value="Mason/Labor">Mason/Labor</option>
-        </select>
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.classList.toggle("active");
+        }
+    </script>
 
-        <label for="expense">Expense:</label>
-        <input type="number" id="expense" placeholder="Enter amount" required>
+    <!-- Toaster Notification -->
+    <div id="toaster" class="toaster">Expense added successfully!</div>
 
-        <button type="submit">Add Expense</button>
-      </form>
-    </div>
-
-    <!-- Expense Table -->
-    <div class="table-container">
-      <h2>Expense Records</h2>
-      <table id="expenseTable">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Expense</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rows will be added dynamically -->
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">Total Spent:</td>
-            <td id="totalSpent">0</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-    <!-- Category Summary -->
-    <div class="summary-container">
-      <h2>Category Wise Summary</h2>
-      <table id="categorySummary">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Total Expense</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rows will be added dynamically -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Floating Button -->
-  <div class="fab" onclick="openExpenseForm()">+</div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore-compat.js"></script>
-  
-  <script src="script.js"></script>
-  
-  <script>
-    function openExpenseForm() {
-      document.getElementById('expenseFormContainer').scrollIntoView({ behavior: "smooth" });
-    }
-  </script>
 </body>
 </html>
