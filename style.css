@@ -1,109 +1,257 @@
-body {
-  font-family: Arial, sans-serif;
+/* Reset styles */
+* {
   margin: 0;
-  padding: 20px;
-  background-color: #f4f4f4;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Body styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 0;
+  margin: 0;
+}
+
+/* Container */
 .container {
   max-width: 100%;
   width: 90%;
-  margin: 0 auto;
+  margin: auto;
   background: #fff;
-  padding: 15px;
+  padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #333;
+  padding: 10px 20px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
 
-h1, h2 {
-  text-align: center;
+/* Navbar menu */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
+.navbar ul li {
+  margin: 0 15px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+}
+
+.navbar ul li a:hover {
+  background-color: #575757;
+  border-radius: 5px;
+}
+
+/* Hamburger Icon */
+.menu-icon {
+  display: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar ul {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: #333;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      text-align: center;
+  }
+
+  .navbar ul.active {
+      display: flex;
+  }
+
+  .menu-icon {
+      display: block;
+  }
+
+  .navbar ul li {
+      padding: 10px 0;
+  }
+}
+
+/* Page layout */
+.page {
+  display: none;
+}
+
+/* Chart container */
 .chart-container {
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   margin: auto;
 }
 
-.form-container {
+/* Add Expense Form */
+#addExpense {
   width: 100%;
-  margin-bottom: 20px;
 }
 
-label {
-  display: block;
-  margin: 10px 0 5px;
+#addExpense form {
+  max-width: 400px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 input, select, button {
   width: 100%;
-  padding: 14px;
-  margin-bottom: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
 button {
   background-color: #28a745;
   color: white;
   font-size: 18px;
-  font-weight: bold;
   border: none;
   cursor: pointer;
-  padding: 14px;
-  border-radius: 8px;
-  transition: background 0.3s ease;
+  padding: 12px;
 }
 
 button:hover {
   background-color: #218838;
 }
 
-/* Make tables fit within screen */
-table {
+/* Expense Records Table - Now Fully Responsive & Compact */
+.table-container {
   width: 100%;
-  border-collapse: collapse;
+  overflow-x: auto;
+  margin: 20px 0;
 }
 
-th, td {
+.table-container h2 {
+  text-align: center;
+}
+
+/* Make table fit screen without scrolling */
+#expenseTable {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  table-layout: fixed; /* Ensures columns adjust to fit */
+}
+
+#expenseTable th, #expenseTable td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  font-size: 14px;
+  word-wrap: break-word; /* Prevents text overflow */
+  font-size: 14px; /* Reduce font size for compactness */
 }
 
-/* Responsive Design */
+/* Make columns adjust for smaller screens */
 @media (max-width: 600px) {
-  .container {
-      width: 95%;
-      padding: 10px;
-  }
-
-  h1, h2 {
-      font-size: 20px;
-  }
-
-  input, select, button {
-      font-size: 14px;
-      padding: 10px;
-  }
-
-  table {
-      width: 100%;
-      font-size: 12px;
-  }
-
-  th, td {
-      padding: 6px;
-      font-size: 12px;
+  #expenseTable th, #expenseTable td {
+      padding: 5px;
+      font-size: 10px;
+      width: 70%;
   }
 }
 
-/* Floating Action Button (FAB) */
+#expenseTable th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#expenseTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#expenseTable tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Category Summary Table */
+.summary-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.summary-container table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.summary-container th, .summary-container td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.summary-container th {
+  background-color: #28a745;
+  color: white;
+}
+
+.filter-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-container label {
+  font-weight: bold;
+  margin-right: 10px;
+  display: block;
+}
+
+/* Styling for Dropdown and Date Picker */
+.filter-container select,
+.filter-container input[type="date"] {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  width: 100%;
+  max-width: 250px;
+  margin: 5px auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .filter-container select,
+  .filter-container input[type="date"] {
+      width: 90%;
+      font-size: 12px;
+      padding: 6px;
+  }
+}
+
+
+/* Floating Action Button */
 .fab {
   position: fixed;
   bottom: 20px;
@@ -123,4 +271,38 @@ th, td {
 
 .fab:hover {
   background-color: #218838;
+}
+
+/* Toaster Notification */
+.toaster {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #28a745;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: visibility 0s, opacity 0.5s linear;
+  opacity: 0;
+}
+
+.toaster.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.toaster.hide {
+  opacity: 0;
+  transition: opacity 0.5s linear, visibility 0s 0.5s;
+  visibility: hidden;
+}
+.small-col {
+  width: 50px; /* Reduced column width */
+  text-align: center;
 }
