@@ -40,30 +40,39 @@
       </form>
     </div>
 
+    <!-- Category Filter Dropdown -->
+<div class="filter-container">
+  <label for="expenseFilter">Filter by Category:</label>
+  <select id="expenseFilter" onchange="filterExpenses()">
+    <option value="All">All Categories</option>
+    <option value="Material">Material</option>
+    <option value="Mason/Labor">Mason/Labor</option>
+  </select>
+</div>
     <!-- Expense Table -->
-    <div class="table-container">
-      <h2>Expense Records</h2>
-      <table id="expenseTable">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Expense</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rows will be added dynamically -->
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">Total Spent:</td>
-            <td id="totalSpent">0</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+<div class="table-container">
+  <h2>Expense Records</h2>
+  <table id="expenseTable">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Expense</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows will be added dynamically -->
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total Spent:</td>
+        <td id="totalSpent">0</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
 
     <!-- Category Summary -->
     <div class="summary-container">

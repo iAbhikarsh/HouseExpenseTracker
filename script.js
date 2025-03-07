@@ -161,3 +161,32 @@ function updateCategorySummary() {
         tbody.appendChild(row);
     }
 }
+
+function filterExpenses() {
+    const selectedCategory = document.getElementById("expenseFilter").value;
+    const tbody = document.querySelector("#expenseTable tbody");
+    tbody.innerHTML = "";
+
+    let filteredExpenses = expenses;
+
+    if (selectedCategory !== "All") {
+        filteredExpenses = expenses.filter(expense => expense.category === selectedCategory);
+    }
+
+    filteredExpenses.forEach((expense, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${expense.date}</td>
+            <td>${expense.name}</td>
+            <td>${expense.category}</td>
+            <td>${expense.expense.toFixed(2)}</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Update total spent after filtering
+    const totalFilteredSpent = filteredExpenses.reduce((sum, item) => sum + item.expense, 0);
+    document.getElementById("totalSpent").textContent = totalFilteredSpent.toFixed(2);
+}
+
