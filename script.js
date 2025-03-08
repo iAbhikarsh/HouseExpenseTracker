@@ -243,3 +243,70 @@ function toggleMenu() {
 document.addEventListener("DOMContentLoaded", function () {
     showPage('dashboard');
 });
+
+// Function to check login status
+function checkAuth() {
+    const user = localStorage.getItem("loggedInUser");
+    if (!user) {
+        window.location.href = "login.html";
+    }
+}
+
+// Function to handle login
+async function login(event) {
+    //showSpinner();
+    event.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    
+    try {
+        const querySnapshot = await db.collection("user").where("username", "==", username).get();
+        if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            const userData = userDoc.data();
+            if (userData.password === password) {
+                // Update isLoggedIn field
+                await db.collection("user").doc(userDoc.id).update({ isLoggedIn: true });
+                localStorage.setItem("loggedInUser", username);
+                window.location.href = "index.html";
+                //hideSpinner();
+            } else {
+                alert("Incorrect password!");
+                //hideSpinner();
+            }
+        } else {
+            alert("User not found!");
+           // hideSpinner();
+        }
+    } catch (error) {
+        console.error("Login error:", error);
+        alert("Login failed! Try again.");
+       // hideSpinner();
+    }
+}
+
+// Function to handle logout
+async function logout() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        try {
+            const querySnapshot = await db.collection("user").where("username", "==", user).get();
+            if (!querySnapshot.empty) {
+                const userDoc = querySnapshot.docs[0];
+                await db.collection("user").doc(userDoc.id).update({ isLoggedIn: false });
+            }
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Logout error:", error);
+            alert("Logout failed! Try again.");
+        }
+    }
+}
+
+function showSpinner() {
+    document.getElementById("spinner-container").style.display = "flex";
+}
+function hideSpinner() {
+    document.getElementById("spinner-container").style.display = "none";
+}
