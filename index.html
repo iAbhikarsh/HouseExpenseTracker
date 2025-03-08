@@ -17,6 +17,7 @@
             <li><a href="#" onclick="showPage('dashboard')">Dashboard</a></li>
             <li><a href="#" onclick="showPage('addExpense')">Add Expense</a></li>
             <li><a href="#" onclick="showPage('expenseRecords')">Expense Records</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
     </nav>
 
@@ -49,27 +50,36 @@
         </div>
 
         <!-- Add Expense Page -->
-        <div id="addExpense" class="page" style="display: none;">
-            <h2>Add Expense</h2>
-            <form id="expenseForm">
-                <label for="date">Date:</label>
-                <input type="date" id="date" required>
+<div id="addExpense" class="page" style="display: none;">
+  <h2>Add Expense</h2>
+  <form id="expenseForm">
+      <div class="form-group">
+          <label for="date">Date:</label>
+          <input type="date" id="date" required>
+      </div>
 
-                <label for="name">Name:</label>
-                <input type="text" id="name" placeholder="Enter name" required>
+      <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" placeholder="Enter name" required>
+      </div>
 
-                <label for="category">Category:</label>
-                <select id="category" required>
-                    <option value="Material">Material</option>
-                    <option value="Mason/Labor">Mason/Labor</option>
-                </select>
+      <div class="form-group">
+          <label for="category">Category:</label>
+          <select id="category" required>
+              <option value="Material">Material</option>
+              <option value="Mason/Labor">Mason/Labor</option>
+          </select>
+      </div>
 
-                <label for="expense">Expense:</label>
-                <input type="number" id="expense" placeholder="Enter amount" required>
+      <div class="form-group">
+          <label for="expense">Expense:</label>
+          <input type="number" id="expense" placeholder="Enter amount" required>
+      </div>
 
-                <button type="submit">Add Expense</button>
-            </form>
-        </div>
+      <button type="submit" class="btn">Add Expense</button>
+  </form>
+</div>
+
 
         <!-- Expense Records Page -->
         <div id="expenseRecords" class="page" style="display: none;">
@@ -113,9 +123,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Floating Button for Quick Add Expense -->
-    <div class="fab" onclick="showPage('addExpense')">+</div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
