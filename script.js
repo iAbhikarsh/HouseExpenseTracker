@@ -48,7 +48,16 @@ async function loadExpenses() {
 }
 
 // Load data on page load
-window.onload = loadExpenses;
+let userLoggedIn;
+window.onload = function () {
+    
+    if (!window.location.pathname.includes("/login.html") && (!window.location.pathname.includes("/unauthorized.html"))) {
+        checkAuth();
+    }
+    if(userLoggedIn){
+        loadExpenses();
+    }
+};
 
 // Initialize Pie Chart
 const ctx = document.getElementById('budgetChart').getContext('2d');
@@ -248,7 +257,11 @@ document.addEventListener("DOMContentLoaded", function () {
 function checkAuth() {
     const user = localStorage.getItem("loggedInUser");
     if (!user) {
-        window.location.href = "login.html";
+        userLoggedIn=false;
+        window.location.href = "unauthorized.html";
+    }
+    else{
+        userLoggedIn=true;
     }
 }
 
