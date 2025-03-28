@@ -168,7 +168,7 @@ function updateExpenseTable() {
 
 // Function to Update Category Summary
 function updateCategorySummary() {
-    const summary = { 'Material': 0, 'Mason/Labor': 0, 'Electrician': 0, 'Gate/Grill/Window':0, 'Plumber':0 };
+    const summary = { 'Material': 0, 'Mason/Labor': 0, 'Electrician': 0, 'Gate/Grill/Window':0, 'Plumber':0, 'Putty':0 };
 
     expenses.forEach(expense => {
         summary[expense.category] += expense.expense;
