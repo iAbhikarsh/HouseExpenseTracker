@@ -168,7 +168,7 @@ function updateExpenseTable() {
 
 // Function to Update Category Summary
 function updateCategorySummary() {
-    const summary = { 'Material': 0, 'Mason/Labor': 0 };
+    const summary = { 'Material': 0, 'Mason/Labor': 0, 'Electrician': 0, 'Gate/Grill/Window':0, 'Plumber':0 };
 
     expenses.forEach(expense => {
         summary[expense.category] += expense.expense;
@@ -274,6 +274,7 @@ async function login(event) {
     
     try {
         const querySnapshot = await db.collection("user").where("username", "==", username).get();
+        debugger;
         if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0];
             const userData = userDoc.data();
@@ -292,6 +293,7 @@ async function login(event) {
            // hideSpinner();
         }
     } catch (error) {
+        debugger;
         console.error("Login error:", error);
         alert("Login failed! Try again.");
        // hideSpinner();
