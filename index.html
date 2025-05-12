@@ -7,9 +7,76 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" href="data:,">
+    <style>
+        /* Basic styling for icons */
+        .edit-icon, .delete-icon {
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .delete-icon {
+            color: red;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .modal-content input[type=text],
+        .modal-content input[type=number],
+        .modal-content input[type=date],
+        .modal-content select {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .modal-actions button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <ul id="menu">
@@ -22,16 +89,11 @@
 
     <div class="container">
 
-        <!-- Dashboard Page -->
         <div id="dashboard" class="page">
             <h1>House Expense Tracker</h1>
-
-            <!-- Pie Chart Section -->
             <div class="chart-container">
                 <canvas id="budgetChart"></canvas>
             </div>
-
-            <!-- Category Wise Expenses Table -->
             <div class="summary-container">
                 <h2>Category Wise Summary</h2>
                 <table id="categorySummary">
@@ -42,61 +104,62 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Rows will be added dynamically -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Add Expense Page -->
-<div id="addExpense" class="page" style="display: none;">
-  <h2>Add Expense</h2>
-  <form id="expenseForm">
-      <div class="form-group">
-          <label for="date">Date:</label>
-          <input type="date" id="date" required>
-      </div>
+        <div id="addExpense" class="page" style="display: none;">
+            <h2>Add Expense</h2>
+            <form id="expenseForm">
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Enter name" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" required>
+                        <option value="BuildingMaterial">Building Material</option>
+                        <option value="ElectricMaterial">Electric Material</option>
+                        <option value="PlumbingMaterial">Plumbing Material</option>
+                        <option value="TilingMaterial">Tiling Material</option>
+                        <option value="PuttyMaterial">Putty Material</option>
+                        <option value="Mason/Labor">Mason/Labor</option>
+                        <option value="Electrician">Electrician</option>
+                        <option value="Plumber">Plumber</option>
+                        <option value="TilingLabor">Tiling Labor</option>
+                        <option value="Gate/Grill/Window">Gate/Grill/Window</option>
+                        <option value="Putty">Putty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expense">Expense:</label>
+                    <input type="number" id="expense" placeholder="Enter amount" required>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">Add Expense</button>
+            </form>
+        </div>
 
-      <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" placeholder="Enter name" required>
-      </div>
-
-      <div class="form-group">
-          <label for="category">Category:</label>
-          <select id="category" required>
-              <option value="Material">Material</option>
-              <option value="Mason/Labor">Mason/Labor</option>
-              <option value="Electrician">Electrician</option>
-              <option value="Plumber">Plumber</option>
-              <option value="Gate/Grill/Window">Gate/Grill/Window</option>
-              <option value="Putty">Putty</option>
-          </select>
-      </div>
-
-      <div class="form-group">
-          <label for="expense">Expense:</label>
-          <input type="number" id="expense" placeholder="Enter amount" required>
-      </div>
-
-      <button type="submit" class="btn">Add Expense</button>
-  </form>
-</div>
-
-
-        <!-- Expense Records Page -->
         <div id="expenseRecords" class="page" style="display: none;">
             <h2>Expense Records</h2>
-
-            <!-- Filters: Category & Date -->
             <div class="filter-container">
                 <label for="expenseFilter">Filter by Category:</label>
                 <select id="expenseFilter" onchange="filterExpenses()">
                     <option value="All">All Categories</option>
                     <option value="Material">Material</option>
+                    <option value="BuildingMaterial">Building Material</option>
+                    <option value="ElectricMaterial">Electric Material</option>
+                    <option value="PlumbingMaterial">Plumbing Material</option>
+                    <option value="TilingMaterial">Tiling Material</option>
+                    <option value="PuttyMaterial">Putty Material</option>
                     <option value="Mason/Labor">Mason/Labor</option>
                     <option value="Electrician">Electrician</option>
                     <option value="Plumber">Plumber</option>
+                    <option value="TilingLabor">Tiling Labor</option>
                     <option value="Gate/Grill/Window">Gate/Grill/Window</option>
                     <option value="Putty">Putty</option>
                 </select>
@@ -104,7 +167,6 @@
                 <label for="dateFilter">Filter by Date:</label>
                 <input type="date" id="dateFilter" onchange="filterExpenses()">
             </div>
-
             <div class="table-container">
                 <table id="expenseTable">
                     <thead>
@@ -114,30 +176,76 @@
                             <th>Name</th>
                             <th>Category</th>
                             <th>Expense</th>
+                            <th id="actioncolumn">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Rows will be added dynamically -->
-                    </tbody>
+                        </tbody>
                     <tfoot style="background-color:#4CAF50;">
                       <tr>
-                          <td colspan="3"></td> <!-- Empty columns to align "Total Spent" under Category -->
-                          <td style="font-weight: bold; text-align: left; color: white;">Total Spent:</td> 
+                          <td colspan="3"></td> <td style="font-weight: bold; text-align: left; color: white;">Total Spent:</td>
                           <td id="totalSpent" style="font-weight: bold;color: white;">0</td>
-                      </tr>
+                          <td></td> </tr>
                   </tfoot>
                 </table>
             </div>
         </div>
     </div>
+<!-- Edit modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Edit Expense</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editDate">Date:</label>
+                    <input type="date" id="editDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="editName">Name:</label>
+                    <input type="text" id="editName" placeholder="Enter name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCategory">Category:</label>
+                    <select id="editCategory" required>
+                        <option value="BuildingMaterial">Building Material</option>
+                        <option value="ElectricMaterial">Electric Material</option>
+                        <option value="PlumbingMaterial">Plumbing Material</option>
+                        <option value="TilingMaterial">Tiling Material</option>
+                        <option value="PuttyMaterial">Putty Material</option>
+                        <option value="Mason/Labor">Mason/Labor</option>
+                        <option value="Electrician">Electrician</option>
+                        <option value="Plumber">Plumber</option>
+                        <option value="TilingLabor">Tiling Labor</option>
+                        <option value="Gate/Grill/Window">Gate/Grill/Window</option>
+                        <option value="Putty">Putty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editExpense">Expense:</label>
+                    <input type="number" id="editExpense" placeholder="Enter amount" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn" id="saveEdit">Save</button>
+                    <button type="button" class="btn" id="cancelEdit">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore-compat.js"></script>
-    
+
     <script src="script.js"></script>
-    
+
     <script>
+        const edit_Modal = document.getElementById("editModal");
+        const closeButton = document.querySelector(".close-button");
+        const cancelEditButton = document.getElementById("cancelEdit");
+        const saveEditButton = document.getElementById("saveEdit");
+        let currentRowToEdit = null;
+
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.style.display = 'none';
@@ -150,10 +258,26 @@
             const menu = document.getElementById("menu");
             menu.classList.toggle("active");
         }
+
+        closeButton.addEventListener('click', () => {
+            edit_Modal.style.display = "none";
+            currentRowToEdit = null;
+        });
+
+        cancelEditButton.addEventListener('click', () => {
+            edit_Modal.style.display = "none";
+            currentRowToEdit = null;
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == edit_Modal) {
+                edit_Modal.style.display = "none";
+                currentRowToEdit = null;
+            }
+        });
     </script>
 
-    <!-- Toaster Notification -->
-    <div id="toaster" class="toaster">Expense added successfully!</div>
+    <div id="toaster" class="toaster"></div>
 
 </body>
 </html>
