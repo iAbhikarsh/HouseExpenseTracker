@@ -148,7 +148,7 @@ async function updateExpenseInFirebase(updatedExpense) {
         editModal.style.display = "none";
         currentRowToEdit = null;
         currentEditId = null;
-        
+
     }
 }
 
@@ -288,6 +288,7 @@ function filterExpenses() {
     const selectedCategory = document.getElementById("expenseFilter").value;
     const selectedDate = document.getElementById("dateFilter").value;
     const tbody = document.querySelector("#expenseTable tbody");
+    const loggedInUser = localStorage.getItem("loggedInUser");
     tbody.innerHTML = "";
     let filteredExpenses = expenses;
 
@@ -311,10 +312,13 @@ function filterExpenses() {
             <td>${expense.name}</td>
             <td>${expense.category}</td>
             <td>${expense.expense.toFixed(2)}</td>
-            <td>
-                <span class="edit-icon" style="cursor: pointer; margin-right: 10px;">&#9998;</span>
-                <span class="delete-icon" style="cursor: pointer; color: red;">&#10006;</span>
-            </td>
+             ${loggedInUser === 'admin' ?
+                `<td>
+                    <span class="edit-icon" style="cursor: pointer; margin-right: 10px;">&#9998;</span>
+                    <span class="delete-icon" style="cursor: pointer; color: red;">&#10006;</span>
+                </td>` :
+                `<td style="display: none;"></td>` // Hide the action cell for non-admin users
+            }
         `;
         tbody.appendChild(row);
 
