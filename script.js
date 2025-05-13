@@ -148,6 +148,7 @@ async function updateExpenseInFirebase(updatedExpense) {
         editModal.style.display = "none";
         currentRowToEdit = null;
         currentEditId = null;
+        
     }
 }
 
